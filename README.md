@@ -1,4 +1,3 @@
-
 ---
 id: express-mongoose-application
 title: sample course selling api (express)
