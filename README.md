@@ -182,7 +182,7 @@ jest test coverage report :
 ![Screenshot 2024-04-22 025850](https://github.com/s2ahil/samples-typescript/assets/101473078/f60570d0-b998-4b4a-912d-80d4c73604e3)
 
 
-## Get Keploy jest sdk
+## Lets see how to use Keploy with jest sdk
 
 ```bash
 npm i @keploy/sdk nyc jest
@@ -194,12 +194,12 @@ Update the `package.json` file that runs the application:
 
 ```json
  "scripts": {
-    //other scripts
+    //Your other scripts
     "test": "jest --coverage --collectCoverageFrom='src/**/*.{js,jsx}'",
     "coverage": "nyc npm test && npm run coverage:merge && npm run coverage:report",
     "coverage:merge": "mkdir -p ./coverage && nyc merge ./coverage .nyc_output/out.json",
     "coverage:report": "nyc report --reporter=lcov --reporter=text"
-    //other scripts
+    //Your other scripts
   }
 ```
 
