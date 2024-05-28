@@ -95,6 +95,61 @@ Delete request - Delete a course
 curl --location --request DELETE 'http://localhost:3000/courses/6626a9cd3840cb305c0a6d52'
 ```
 
+🎉 Easy right! Just one API call and you've whipped up a test case with a mock. Check out the Keploy directory to find your shiny new `test-1.yml` and `mocks.yml` files.
+
+```yaml
+version: api.keploy.io/v1beta1
+kind: Http
+name: test-1
+spec:
+    metadata: {}
+    req:
+        method: GET
+        proto_major: 1
+        proto_minor: 1
+        url: http://localhost:3000/courses
+        header:
+            Accept: '*/*'
+            Accept-Encoding: gzip, deflate, br
+            Cache-Control: no-cache
+            Connection: keep-alive
+            Host: localhost:3000
+            Postman-Token: 61d4ef71-85a9-4dd9-b036-6beb0136c8d7
+            User-Agent: PostmanRuntime/7.32.1
+        body: ""
+        timestamp: 2024-04-22T23:56:36.910408265+05:30
+    resp:
+        status_code: 200
+        header:
+            Access-Control-Allow-Origin: '*'
+            Connection: keep-alive
+            Content-Length: "740"
+            Content-Type: application/json; charset=utf-8
+            Date: Mon, 22 Apr 2024 18:26:36 GMT
+            Etag: W/"2e4-bpK0GltUbFpXKUMEiWddtMBI/a4"
+            Keep-Alive: timeout=5
+            X-Powered-By: Express
+        body: '{"courses":[{"_id":"66269dd4a16b2f11f9c1c0e9","title":"python course","description":"advance","price":1000,"published":true,"__v":0},{"_id":"66269e13a16b2f11f9c1c0ec","title":"react course","description":"advance","price":1000,"published":true,"__v":0},{"_id":"66269f2034c9140719a0f7de","title":"express","description":"advance","price":1000,"published":true,"__v":0},{"_id":"6626a8f2946288ed91737eb7","title":"express and react","description":"advance","price":1000,"published":true,"__v":0},{"_id":"6626a9cd3840cb305c0a6d52","title":"react and next js","description":"advance","price":1000,"published":true,"__v":0},{"_id":"6626aa43f9602455c7dac9ea","title":"react advance","description":"advance","price":1000,"published":true,"__v":0}]}'
+        status_message: OK
+        proto_major: 0
+        proto_minor: 0
+        timestamp: 2024-04-22T23:56:38.951925148+05:30
+    objects: []
+    assertions:
+        noise:
+            header.Date: []
+    created: 1713810398
+curl: |
+    curl --request GET \
+      --url http://localhost:3000/courses \
+      --header 'Connection: keep-alive' \
+      --header 'User-Agent: PostmanRuntime/7.32.1' \
+      --header 'Accept: */*' \
+      --header 'Cache-Control: no-cache' \
+      --header 'Postman-Token: 61d4ef71-85a9-4dd9-b036-6beb0136c8d7' \
+      --header 'Host: localhost:3000' \
+      --header 'Accept-Encoding: gzip, deflate, br' \
+```
 
 Or simply wander over to your browser and visit `http://localhost:3000/courses`.
 
@@ -123,7 +178,75 @@ Keploy test report:
 npm test
 ```
 jest test coverage report : 
+
 ![Screenshot 2024-04-22 025850](https://github.com/s2ahil/samples-typescript/assets/101473078/f60570d0-b998-4b4a-912d-80d4c73604e3)
+
+
+## Get Keploy jest sdk
+
+```bash
+npm i @keploy/sdk nyc jest
+```
+
+## Update package file
+
+Update the `package.json` file that runs the application:
+
+```json
+ "scripts": {
+    //other scripts
+    "test": "jest --coverage --collectCoverageFrom='src/**/*.{js,jsx}'",
+    "coverage": "nyc npm test && npm run coverage:merge && npm run coverage:report",
+    "coverage:merge": "mkdir -p ./coverage && nyc merge ./coverage .nyc_output/out.json",
+    "coverage:report": "nyc report --reporter=lcov --reporter=text"
+    //other scripts
+  }
+```
+
+## Usage
+
+For the code coverage for the keploy API tests using the jest integration, you need to add the following test to your Jest test file. It can be called as `keploy.test.js`. Jest test file. It can be called as `keploy.test.js`.
+
+```javascript
+const {expect} = require("@jest/globals");
+const keploy = require("@keploy/sdk");
+const timeOut = 300000;
+
+describe(
+  "Keploy Server Tests",
+  () => {
+    test(
+      "TestKeploy",
+      (done) => {
+        const cmd = "npm start";
+        const options = {};
+        keploy.Test(cmd, options, (err, res) => {
+          if (err) {
+            done(err);
+          } else {
+            expect(res).toBeTruthy(); // Assert the test result
+            done();
+          }
+        });
+      },
+      timeOut
+    );
+  },
+  timeOut
+);
+```
+
+Now let's run jest tests along keploy using command
+
+```bash
+npm test
+```
+
+To get Combined coverage with keploy test coverage
+
+```bash
+npm run coverage
+```
 
 ### Wrapping it up 🎉
 
