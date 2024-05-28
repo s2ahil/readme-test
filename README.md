@@ -41,6 +41,8 @@ npm install
 
 ### Docker installation and running the mongodb compass
 
+## Here im using wsl , so follow below steps to configure docker with mongo db compass
+
 **1. Install docker in your windows and follow this tutorial to connect with mongodb compass :**
 ``` bash
 https://www.youtube.com/watch?v=NEPZqSvKx40&list=PLff_PESolMjuDXQdjiqYRW_GnDQjU32QX
